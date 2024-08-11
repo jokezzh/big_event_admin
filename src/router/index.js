@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores'
 import { createRouter, createWebHistory } from 'vue-router'
 
 // createRouter 创建路由实例
@@ -14,7 +15,7 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('@/views/layout/LayoutContainer.vue'),
-      redirect: '/article/manage',
+      redirect: '/article/channel',
       children: [
         {
           path: '/article/manage',
@@ -41,4 +42,9 @@ const router = createRouter({
   ]
 })
 
+//登录拦截
+router.beforeEach((to) => {
+  const useStore = useUserStore()
+  if (!useStore.token && to.path !== '/login') return '/login'
+})
 export default router
